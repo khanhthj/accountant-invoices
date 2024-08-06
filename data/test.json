@@ -38,10 +38,10 @@
   {
     "id": 4,
     "family_id": "002/TA",
-    "name": "",
+    "name": "#NA",
     "dob": "",
     "gender": "",
-    "relationship": "",
+    "relationship": "Chu ho",
     "family_count": "4"
   },
   {
@@ -142,5 +142,5 @@
     "gender": "Nam",
     "relationship": "Cháu",
     "family_count": "7"
-  },
+  }
 ]
