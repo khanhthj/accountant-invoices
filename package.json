@@ -1,0 +1,10 @@
+{
+  "devDependencies": {
+    "express": "^4.19.2",
+    "nodemon": "^3.1.4",
+    "xlsx": "^0.18.5"
+  },
+  "scripts": {
+    "dev": "nodemon server.js"
+  }
+}
