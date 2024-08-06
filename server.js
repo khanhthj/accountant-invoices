@@ -1,8 +1,8 @@
 import express from 'express'
 
 const app = express();
-//const _PATCH = 'D:/KHANH-THI/accountant-invoices/data/thoian.json'
-const _PATCH = 'D:/KHANH-THI/accountant-invoices/data/test.json'
+const _PATCH = 'D:/KHANH-THI/accountant-invoices/data/thoian.json'
+//const _PATCH = 'D:/KHANH-THI/accountant-invoices/data/test.json'
 
 import { readJSON, jsonToExcel, jsonToExcelWithFormat } from './handle/json-to-excel.js';
 

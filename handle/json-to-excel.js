@@ -48,17 +48,32 @@ export const jsonToExcelWithFormat = async (jsonData, outputPath) => {
         let currentRow = 1;
         const _ROW = 18;
         const _COL = 10;
+        let peoples = 0;
+        let supplies = 0;
 
-        for (const item of jsonData) {
+        for (let i = 0; i< jsonData.length; i++) {
 
-            console.log("REMAIN = ", _ROW - currentRow - item.family_count )
+            const item = jsonData[i];
+            //Caculate total peoples and supplies
 
+            console.log("test ==== " , _ROW - currentRow - 1);
+
+            //If new family_count is more than remaining rows
             if (item.relationship === "Chu ho" && _ROW - currentRow - item.family_count < 2) {
-                // Tạo 9 hàng trống và thêm vào worksheet
-                const emptyRows = Array(_ROW - currentRow).fill(Array(_COL).fill(null));
+                // Create blank row and add to worksheet
+                const emptyRows = Array(_ROW - currentRow - 1).fill(Array(_COL).fill(null));
                 for (const row of emptyRows) {
                     worksheet.push(row);
                 }
+
+                //Create page summary
+                worksheet.push(
+                    createSumPageRow(peoples, supplies)
+                );
+                peoples = 0;
+                supplies = 0;
+                currentRow = 1;
+
             }
             // Add data to worksheet
             worksheet.push(
@@ -67,6 +82,12 @@ export const jsonToExcelWithFormat = async (jsonData, outputPath) => {
 
             //Increase 1 row when adding successfully
             currentRow++;
+
+            //If valid family member
+            if(item.family_count){
+                peoples ++;
+                supplies +=200000;
+            }
         }
 
         // Create worksheet from data
@@ -93,7 +114,7 @@ export const jsonToExcelWithFormat = async (jsonData, outputPath) => {
  * @returns XLSX row object
  */
 const createRow = (data, worksheet, limit) => {
-    
+
     //Init row
     const row = [];
 
@@ -107,9 +128,30 @@ const createRow = (data, worksheet, limit) => {
     row.push(data.dob || '');
     row.push(data.gender || '');
     row.push(data.relationship || '');
-    row.push(data.relationship === _KEY ? data.family_count : '');
-    row.push(data.relationship === _KEY ? 200000 * data.family_count : '');
+    row.push(data.relationship === _KEY ? {v: data.family_count} : '');
+    row.push(data.relationship === _KEY ? {v: 200000 * data.family_count} : '');
     row.push({ border: { top: { style: 'medium' } } });
+
+    return row;
+}
+
+/**
+ * Add "Cộng trang"
+ * @returns XLSX row object
+ */
+const createSumPageRow = (peoples, supplies) => {
+    const row = [];
+    const _TEXT = "CỘNG TRANG";
+
+    row.push('');
+    row.push(_TEXT);
+    for (let i = 0; i < 4; i++) {
+        row.push('')
+    };
+    row.push({t: 'n', v: peoples});
+    row.push({t: 'n', v: supplies});
+    row.push('');
+    row.push('');
 
     return row;
 }
